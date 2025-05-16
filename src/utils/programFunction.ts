@@ -2,6 +2,7 @@
 import axios from "axios";
 import { clusterApiUrl, Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { program } from "./anchorClient";
+import imageCompression from 'browser-image-compression';
 const metadataProgram = new PublicKey(
   "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
 );
@@ -31,10 +32,16 @@ export type Token = {
 export const uploadImagePinata = async (file: File) => {
   if (file) {
     try {
+      // Compress the image before uploading (adjust options as needed)
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.5,       // target max size in MB
+        maxWidthOrHeight: 1024, // max dimension
+        useWebWorker: true,
+      });
     
       // console.log("PINATA_SECRET_API_KEY :",  KEY);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressedFile);
  
       const response = await axios({
         method: "post",
