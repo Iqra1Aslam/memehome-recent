@@ -576,7 +576,6 @@ interface Coin {
   holders: number;
   volume24h: string;
   price: string;
-  token: string;
   change24h: string;
   date: string;
 }
@@ -598,10 +597,10 @@ function App() {
       try {
         // Always try to fetch from the API first
         const response = await fetch(`${URL}coin/getAllCoins`);
-        // console.log("response: ", response);
+        
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        // console.log("data: ", data);
+        console.log("data: ", data);
         setCoins(data);
         setFilteredCoins(data);
         localStorage.setItem("coins", JSON.stringify(data)); // Cache the data
@@ -628,7 +627,9 @@ function App() {
         
         if (!getCrownCoins.ok) throw new Error("Response was not ok");
         const data = await getCrownCoins.json();
+         console.log("Full response from API:", data);
         if (Array.isArray(data.data)) {
+           console.log("Crown token array received:", data.data);
           setKothCoins(data.data);
           localStorage.setItem("kothCoins", JSON.stringify(data.data)); // Cache the data
         }
@@ -650,7 +651,7 @@ function App() {
 
     const handleNewCoin = (message: any) => {
       const newCoin = message.data;
-      // console.log("New coin received via Ably:", newCoin);
+      console.log("New coin received via Ably:", newCoin);
       setCoins((prevCoins) => {
         const updatedCoins = [...prevCoins, newCoin];
         localStorage.setItem("coins", JSON.stringify(updatedCoins));
@@ -660,7 +661,7 @@ function App() {
     };
 
     const handleKothGet = (message: any) => {
-      // console.log("kothGet event received:", new Date().toISOString(), message);
+      console.log("kothGet event received:", new Date().toISOString(), message);
       debouncedFetchCrownTokens();
     };
 
@@ -679,7 +680,7 @@ function App() {
       try {
         const solPrice = await fetch(`${URL}coin/sol-price`);
         const setSolPrice = await solPrice.json();
-        // console.log("sol price: ", setSolPrice.USD);
+        console.log("sol price: ", setSolPrice.USD);
         localStorage.setItem("sol-price", setSolPrice.USD);
         setPrice(setSolPrice.USD);
       } catch (error) {
@@ -715,10 +716,7 @@ function App() {
       : null;
 
   const handleTradeClick = (token: Coin) => {
- 
     setSelectedToken(token);
-
-   
     navigate("/token-detail", {
       state: {
         tokenData: {
@@ -726,7 +724,6 @@ function App() {
           name: token.name,
           symbol: token.ticker,
           imgUrl: token.imgUrl,
-          token:token.token,
           marketCap: `${(token.marketCap * (price ?? 164.91)).toFixed(2)}`,
           price: token.price,
           change24h: token.change24h,
@@ -736,7 +733,6 @@ function App() {
         },
       },
     });
-   
   };
 
   const handleLaunchClick = () => {
@@ -799,7 +795,6 @@ function App() {
                 handleSearch={handleSearch}
                 highMarketCapCoins={highMarketCapCoins}
                 CoinCard={CoinCard}
-             
                 filteredCoins={filteredCoins}
                 handleTradeClick={handleTradeClick}
                 onLaunchClick={handleLaunchClick}
@@ -819,9 +814,6 @@ function App() {
                   onBack={() => navigate("/")}
                   tokenData={selectedToken}
                   price={price}
-                  // token={selectedToken.token} // if it's a property inside selectedToken
-
-                
                 />
               </>
             }

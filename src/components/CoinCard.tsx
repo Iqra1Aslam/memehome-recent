@@ -3,8 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import axios from "axios";
 import { ably } from "../utils/ablyClient";
 
-const URL = process.env.VITE_API_URL || "http://localhost:8000/";
-
+const URL = import.meta.env.VITE_API_URL;
 const getTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
   return formatDistanceToNow(date, { addSuffix: true });
@@ -34,7 +33,8 @@ interface CoinCardProps {
 const CoinCard: React.FC<CoinCardProps> = ({ coin, onTradeClick, price }) => {
   const [replyCount, setReplyCount] = useState<number>(0);
   const timeAgo = getTimeAgo(coin.date);
- 
+ console.log("Rendering CoinCard for:", coin.name, "isCrown:", coin.isCrown);
+
 
   // Optional: Programmatically truncate description to a max length
   const maxDescriptionLength = 50;

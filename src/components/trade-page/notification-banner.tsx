@@ -21,23 +21,23 @@ const jerkyAnimation = {
 };
 
 // Function to format amount to 4 decimal places
-// const formatAmount = (amount: string): string => {
-//   const [value, unit] = amount.split(" ");
-//   const numValue = parseFloat(value);
-//   if (isNaN(numValue)) return amount;
-//   return `${numValue.toFixed(4)} ${unit}`;
-// };
-function formatAmount(amount: string | number | undefined | null): string {
-  if (!amount || typeof amount !== "string" && typeof amount !== "number") return "";
+const formatAmount = (amount: string): string => {
+  const [value, unit] = amount.split(" ");
+  const numValue = parseFloat(value);
+  if (isNaN(numValue)) return amount;
+  return `${numValue.toFixed(4)} ${unit}`;
+};
+// function formatAmount(amount: string | number | undefined | null): string {
+//   if (!amount || typeof amount !== "string" && typeof amount !== "number") return "";
 
-  const amountStr = typeof amount === "number" ? amount.toFixed(4) : amount;
-  const [integerPart, decimalPart = ""] = amountStr.split(".");
+//   const amountStr = typeof amount === "number" ? amount.toFixed(4) : amount;
+//   const [integerPart, decimalPart = ""] = amountStr.split(".");
 
-  return (
-    integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-    (decimalPart ? "." + decimalPart.slice(0, 2) : "")
-  );
-}
+//   return (
+//     integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+//     (decimalPart ? "." + decimalPart.slice(0, 2) : "")
+//   );
+// }
 
 
 // Function to parse market cap (handles both string and number)

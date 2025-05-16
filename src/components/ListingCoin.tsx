@@ -108,7 +108,7 @@ const ListingCoin: React.FC<ListingCoinProps> = ({
 
   const handleSortChange = (option: string) => setSortOption(option);
   const handleSearch = (query: string) => {
-    console.log("Search query:", query);
+    
     setSearchQuery(query);
   };
 

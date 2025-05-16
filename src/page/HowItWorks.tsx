@@ -6,6 +6,7 @@ import Create from "../assests/creation page.png";
 import Trade from "../assests/trade.png";
 import video from "../assests/memevideo.mp4";
 import { useNavigate } from "react-router-dom";
+import rayImage from '../assests/ray.png';
 
 const HowItWorks: React.FC = () => {
   const navigate = useNavigate();
@@ -190,12 +191,17 @@ const HowItWorks: React.FC = () => {
                   <div className="w-24 h-24 mb-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center">
                     <TrendingUp className="w-12 h-12 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    Raydium DEX
+                        {/* <div className="w-24 h-24 mb-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center overflow-hidden"> */}
+                        <img src={rayImage} alt="Raydiummm DEX" className="w-12 h-12 object-contain" />
+
+      {/* </div> */}
+
+                  {/* <h3 className="text-2xl font-bold text-white mb-2">
+                    Raydiummm DEX
                   </h3>
                   <p className="text-blue-200 text-center">
                     Your meme coin automatically listed on Solana's premier DEX
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>

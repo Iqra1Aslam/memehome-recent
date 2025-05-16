@@ -115,13 +115,22 @@ const ThreadSection: React.FC<ThreadSectionProps> = ({
     if (!tokenAddress) return;
     const onNewTrade = (message: any) => {
       const tradeData = message.data;
-      // console.log("new trade received via Ably", tradeData)
+      console.log("new trade received via Ably", tradeData)
+       if (!tradeData.timestamp) {
+      tradeData.timestamp = new Date().toISOString();
+    }
+      console.log("new trade received via Ably", tradeData)
       // If user is on trades tab, update local state with the new trade
       if (activeTab === "trades") {
         setFetchedTrades((prevTrades) => {
-          const updatedTrades = [...prevTrades, tradeData];
+          // const updatedTrades = [...prevTrades, tradeData];
          
-          return updatedTrades;
+          // return updatedTrades;
+          const updatedTrades = [...prevTrades, tradeData].sort(
+  (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+);
+return updatedTrades;
+
           
         });
       }

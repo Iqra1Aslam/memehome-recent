@@ -41,7 +41,7 @@ import { channel } from "../../utils/ablyClient";
 
 // });
 const KEY = import.meta.env.VITE_API_HOLDERS;
-const URL = import.meta.env.VITE_API_URL || "http://localhost:8000/";
+const URL = import.meta.env.VITE_API_URL;
 const QUICKNODE_RPC = `https://fragrant-frequent-hill.solana-devnet.quiknode.pro/${KEY}/`;
 
 interface TokenData {
@@ -477,6 +477,7 @@ const TokenTradingPanel: React.FC<TokenTradingPanelProps> = ({
           const response = await axios.get(
             `${URL}user/coin/api/holders/${tokenData.token}`
           );
+          console.log("token :",tokenData.token);
           const fetchedHolders = response.data;
           // console.log("Fetched holders:", fetchedHolders);
           if (Array.isArray(fetchedHolders) && fetchedHolders.length > 0) {
