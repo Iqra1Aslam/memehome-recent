@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../index.css";
 import CoinCard from "./listcoin/CoinCard";
@@ -36,58 +36,38 @@ interface ListingCoinProps {
 
 const ITEMS_PER_PAGE = 25;
 
-const ListingCoin: React.FC<ListingCoinProps> = ({
-  onTradeClick,
-  coins,
-  price,
-}) => {
+const ListingCoin: React.FC<ListingCoinProps> = ({ onTradeClick, coins, price }) => {
   const [shufflingCardId, setShufflingCardId] = useState<string | null>(null);
-  const [sortOption, setSortOption] = useState<string>("Creation Time");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const handleDataLoad = useCallback(() => {
-    // console.log('Handling data load, coins length:', coins?.length);
-    setIsLoading(true);
-    setTimeout(() => {
-      // console.log('Loading complete');
-      setIsLoading(false);
-    }, 500);
-  }, []);
+  const [sortOption, setSortOption] = useState("Creation Time");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // console.log('Coins received:', coins);
-    // console.log('Price:', price);
-    handleDataLoad();
+    setIsLoading(true);
+    const timeout = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timeout);
+  }, [coins]);
 
-    if (!coins || coins.length === 0) {
-      return;
-    }
+  useEffect(() => {
+    if (!coins || coins.length === 0) return;
 
     const shuffleInterval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * coins.length);
-      const randomCardId = coins[randomIndex]._id;
-      setShufflingCardId(randomCardId);
+      setShufflingCardId(coins[randomIndex]._id);
       setTimeout(() => setShufflingCardId(null), 500);
     }, 3000);
 
     return () => clearInterval(shuffleInterval);
-  }, [coins, handleDataLoad]);
+  }, [coins]);
 
-  // Adjusted filter to use marketCap directly with a higher threshold
-  const regularCoins =
-    coins?.filter((coin) => {
-      // console.log(`${coin.name}: Market Cap = ${coin.marketCap}`);
-      return coin.marketCap <= 10000; // Adjust this threshold based on your needs
-    }) || [];
-
+  const regularCoins = coins?.filter((coin) => coin.marketCap <= 10000) || [];
+  const totalPages = Math.ceil(regularCoins.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const displayedRegularCoins = regularCoins.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(regularCoins.length / ITEMS_PER_PAGE);
 
-  const filteredDisplayedCoins = displayedRegularCoins
+  const filteredDisplayedCoins = regularCoins
+    .slice(startIndex, endIndex)
     .filter(
       (coin) =>
         coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,25 +79,21 @@ const ListingCoin: React.FC<ListingCoinProps> = ({
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         case "Market Cap":
           return b.marketCap - a.marketCap;
-        case "Last Trade":
-          return 0;
         default:
           return 0;
       }
     });
 
   const handleSortChange = (option: string) => setSortOption(option);
-  const handleSearch = (query: string) => {
-    
-    setSearchQuery(query);
-  };
+  const handleSearch = (query: string) => setSearchQuery(query);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
       setSearchQuery("");
       setSortOption("Creation Time");
-      handleDataLoad();
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 500);
     }
   };
 
@@ -126,7 +102,8 @@ const ListingCoin: React.FC<ListingCoinProps> = ({
       setCurrentPage(currentPage - 1);
       setSearchQuery("");
       setSortOption("Creation Time");
-      handleDataLoad();
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 500);
     }
   };
 
@@ -202,10 +179,11 @@ const ListingCoin: React.FC<ListingCoinProps> = ({
                     : "bg-purple-500 hover:bg-purple-600"
                 } text-white`}
               >
+                {/* Left Arrow */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
                   viewBox="0 0 24 24"
+                  fill="none"
                   stroke="currentColor"
                   className="w-6 h-6"
                 >
@@ -229,10 +207,11 @@ const ListingCoin: React.FC<ListingCoinProps> = ({
                     : "bg-purple-500 hover:bg-purple-600"
                 } text-white`}
               >
+                {/* Right Arrow */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
                   viewBox="0 0 24 24"
+                  fill="none"
                   stroke="currentColor"
                   className="w-6 h-6"
                 >
