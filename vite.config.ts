@@ -22,6 +22,9 @@ export default defineConfig({
       include: ["buffer"]
     }),
   ],
+   build: {
+    target: 'esnext', // <--- MOST IMPORTANT
+  },
   optimizeDeps: {
     //exclude: ['web3]
   }
