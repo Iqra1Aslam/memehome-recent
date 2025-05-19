@@ -1,29 +1,37 @@
-import { defineConfig, UserConfigExport, ConfigEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import nodePolyfills from 'rollup-plugin-polyfill-node';
-// import tailwindcss from '@tailwindcss/vite'
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 
-
-// https://vite.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
       process: "process/browser",
       stream: "stream-browserify",
       zlib: "browserify-zlib",
-      util: 'util'
+      util: 'util',
     }
   },
   define: {
     'process.env': process.env
   },
-  plugins: [react(),
+  plugins: [
+    react(),
     nodePolyfills({
-      include: ["buffer"]
+      include: ['buffer'] // only if you're actually using it
     }),
   ],
-   
+  build: {
+    sourcemap: true, // required for bundle analysis
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          vendor: ['stream-browserify', 'zlib', 'util'],
+        }
+      }
+    }
+  },
   optimizeDeps: {
-    //exclude: ['web3]
+    exclude: ['stream-browserify', 'browserify-zlib'], // if not needed at runtime
   }
 })
