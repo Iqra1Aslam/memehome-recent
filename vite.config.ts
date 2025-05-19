@@ -22,6 +22,7 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true, // required for bundle analysis
+     outDir: 'dist', 
     rollupOptions: {
       output: {
         manualChunks: {
