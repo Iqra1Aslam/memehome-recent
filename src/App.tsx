@@ -600,7 +600,7 @@ function App() {
         
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        console.log("data: ", data);
+     
         setCoins(data);
         setFilteredCoins(data);
         localStorage.setItem("coins", JSON.stringify(data)); // Cache the data
@@ -627,9 +627,9 @@ function App() {
         
         if (!getCrownCoins.ok) throw new Error("Response was not ok");
         const data = await getCrownCoins.json();
-         console.log("Full response from API:", data);
+       
         if (Array.isArray(data.data)) {
-           console.log("Crown token array received:", data.data);
+      
           setKothCoins(data.data);
           localStorage.setItem("kothCoins", JSON.stringify(data.data)); // Cache the data
         }
@@ -651,7 +651,7 @@ function App() {
 
     const handleNewCoin = (message: any) => {
       const newCoin = message.data;
-      console.log("New coin received via Ably:", newCoin);
+      
       setCoins((prevCoins) => {
         const updatedCoins = [...prevCoins, newCoin];
         localStorage.setItem("coins", JSON.stringify(updatedCoins));
@@ -661,7 +661,7 @@ function App() {
     };
 
     const handleKothGet = (message: any) => {
-      console.log("kothGet event received:", new Date().toISOString(), message);
+  
       debouncedFetchCrownTokens();
     };
 
@@ -680,7 +680,7 @@ function App() {
       try {
         const solPrice = await fetch(`${URL}coin/sol-price`);
         const setSolPrice = await solPrice.json();
-        console.log("sol price: ", setSolPrice.USD);
+ 
         localStorage.setItem("sol-price", setSolPrice.USD);
         setPrice(setSolPrice.USD);
       } catch (error) {

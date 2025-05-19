@@ -38,6 +38,10 @@ export const uploadImagePinata = async (file: File) => {
         maxWidthOrHeight: 1024, // max dimension
         useWebWorker: true,
       });
+      
+      console.log("Original size (MB):", file.size / 1024 / 1024);
+      console.log("Compressed size (MB):", compressedFile.size / 1024 / 1024);
+
     
       // console.log("PINATA_SECRET_API_KEY :",  KEY);
       const formData = new FormData();
