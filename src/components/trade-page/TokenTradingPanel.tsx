@@ -444,10 +444,10 @@ const TokenTradingPanel: React.FC<TokenTradingPanelProps> = ({
         } else {
           // If realTokenReserves is 0, use the last saved progress
           setBondingCurveProgress(lastValidProgressRef.current);
-          console.log(
-            "Using last saved progress:",
-            lastValidProgressRef.current
-          );
+          // console.log(
+          //   "Using last saved progress:",
+          //   lastValidProgressRef.current
+          // );
         }
 
         const token = tokenData.bondingCurve;
@@ -477,7 +477,7 @@ const TokenTradingPanel: React.FC<TokenTradingPanelProps> = ({
           const response = await axios.get(
             `${URL}user/coin/api/holders/${tokenData.token}`
           );
-          console.log("token :",tokenData.token);
+          // console.log("token :",tokenData.token);
           const fetchedHolders = response.data;
           // console.log("Fetched holders:", fetchedHolders);
           if (Array.isArray(fetchedHolders) && fetchedHolders.length > 0) {

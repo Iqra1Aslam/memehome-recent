@@ -278,30 +278,50 @@ return updatedTrades;
   //     console.error("Failed to fetch coin details:", error);
   //   }
   // };
-  const getCoin = async () => {
+//   const getCoin = async () => {
+//   setLoading(true); // mark as loading
+//   try {
+//     const response = await axios.get(`${URL}coin/coinDetail/${tokenAddress}`);
+//     // console.log("response data Coin:", response.data);
+//     const channel = ably.channels.get(`reply-count-${tokenAddress}`);
+//      console.log(`coin :${URL}coin/coinDetail${tokenAddress}`)
+    
+     
+//     setCoinData(response.data);
+ 
+//   } catch (error) {
+//     console.error("Failed to fetch coin info details:", error);
+//   } finally {
+//     setLoading(false); // mark loading complete
+//   }
+// };
+
+//   useEffect(() => {
+//     getCoin();
+//     return () => {
+     
+//     };
+//   }, [tokenAddress]);
+const getCoin = async () => {
   setLoading(true); // mark as loading
   try {
     const response = await axios.get(`${URL}coin/coinDetail/${tokenAddress}`);
-    // console.log("response data Coin:", response.data);
+    // console.log("coin :", `${URL}coin/coinDetail/${tokenAddress}`);
+
     const channel = ably.channels.get(`reply-count-${tokenAddress}`);
 
-    
-     
     setCoinData(response.data);
- 
   } catch (error) {
-    console.error("Failed to fetch coin details:", error);
+    console.error("Failed to fetch coin info details:", error);
   } finally {
     setLoading(false); // mark loading complete
   }
 };
 
-  useEffect(() => {
-    getCoin();
-    return () => {
-     
-    };
-  }, [tokenAddress]);
+useEffect(() => {
+  if (tokenAddress) getCoin();
+}, [tokenAddress]);
+
   return (
 
     <motion.div
